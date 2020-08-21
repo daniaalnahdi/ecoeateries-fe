@@ -30,8 +30,8 @@ const RegisterPage = () => {
   };
   return (
     <div className='container'>
-      <div class='columns is-centered'>
-        <div class='column is-half'>
+      <div className='columns is-centered'>
+        <div className='column is-half'>
           <h1 className='title is-2'>Register</h1>
           <p className='subtitle'>
             Already have an account? {''}

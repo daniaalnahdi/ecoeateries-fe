@@ -19,12 +19,15 @@ import './App.sass';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  const login = useCallback(() => {
+  const login = useCallback((uid) => {
+    setUserId(uid);
     setIsLoggedIn(true);
   }, []);
 
   const logout = useCallback(() => {
+    setUserId(null);
     setIsLoggedIn(false);
   }, []);
 
@@ -36,14 +39,14 @@ const App = () => {
         <Route path='/' exact>
           <HomePage />
         </Route>
-        <Route path='/reports/:userId/edit' exact>
+        <Route path={`/${userId}/report/edit`} exact>
           <ReportEditPage />
         </Route>
-        <Route path='/reports/:userId/view' exact>
-          <ReportViewPage />
-        </Route>
-        <Route path='/reports/:userId' exact>
+        <Route path={`/${userId}/report`} exact>
           <ReportResultPage />
+        </Route>
+        <Route path='/:userId/report/view' exact>
+          <ReportViewPage />
         </Route>
         <Redirect to='/' />
       </Switch>
@@ -60,7 +63,7 @@ const App = () => {
         <Route path='/register' exact>
           <RegisterPage />
         </Route>
-        <Route path='/reports/:userId/view' exact>
+        <Route path='/:userId/report/view' exact>
           <ReportViewPage />
         </Route>
         <Redirect to='/login' />
@@ -70,7 +73,12 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: isLoggedIn,
+        userId: userId,
+        login: login,
+        logout: logout,
+      }}
     >
       <Router>
         <NavBar />

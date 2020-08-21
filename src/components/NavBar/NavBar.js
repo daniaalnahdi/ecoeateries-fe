@@ -39,7 +39,7 @@ const NavBar = () => {
           <>
             <div className='navbar-item'>
               <Link
-                to='/reports/:userId/edit'
+                to={`/${auth.userId}/report/edit`}
                 className='button is-primary is-light'
               >
                 Update Report

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import LargeHeading from '../components/LargeHeading/LargeHeading';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet/BadgeCodeSnippet';
 import BadgePreview from '../components/BadgePreview/BadgePreview';
+import AuthContext from '../context/AuthContext';
 
 const ReportResultPage = () => {
-  const src = '/reports/123/view';
+  const auth = useContext(AuthContext);
+  const userId = auth.userId;
 
+  const src = `/${userId}/report/view`;
   const codeSnippet = `<iframe src='${src}' height='200' width='300' title='Restaurant Report'></iframe>`;
 
   return (

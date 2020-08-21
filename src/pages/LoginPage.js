@@ -23,7 +23,8 @@ const LoginPage = () => {
     e.preventDefault();
     //validate here
     if (credentials.email && credentials.password) {
-      auth.login();
+      //pass in user id
+      auth.login(1);
       //update usercontext
     } else {
       setDisplayError(true);
@@ -31,8 +32,8 @@ const LoginPage = () => {
   };
   return (
     <div className='container'>
-      <div class='columns is-centered'>
-        <div class='column is-half'>
+      <div className='columns is-centered'>
+        <div className='column is-half'>
           <h1 className='title is-2'>Login</h1>
           <p className='subtitle'>
             Don't have an account? {''}
