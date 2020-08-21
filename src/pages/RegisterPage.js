@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [credentials, setCredentials] = useState({
-    name: '',
     email: '',
     password: '',
+    restaurantName: '',
+    restaurantLocation: '',
   });
   const [displaySuccess, setDisplaySuccess] = useState(false);
   const [displayError, setDisplayError] = useState(false);
@@ -21,8 +22,14 @@ const RegisterPage = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     //validate here
-    if (credentials.name && credentials.email && credentials.password) {
+    if (
+      credentials.email &&
+      credentials.password &&
+      credentials.restaurantName &&
+      credentials.restaurantLocation
+    ) {
       //register user
+      setDisplayError(false);
       setDisplaySuccess(true);
     } else {
       setDisplayError(true);
@@ -53,19 +60,6 @@ const RegisterPage = () => {
           )}
           <form onSubmit={handleLoginSubmit}>
             <div className='field'>
-              <label className='label'>Restaurant Name</label>
-              <div className='control'>
-                <input
-                  className='input'
-                  type='name'
-                  id='name'
-                  placeholder='Restaurant Name'
-                  value={credentials.name}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div className='field'>
               <label className='label'>Email</label>
               <div className='control'>
                 <input
@@ -87,6 +81,30 @@ const RegisterPage = () => {
                   id='password'
                   placeholder='Password'
                   value={credentials.password}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className='field'>
+              <label className='label'>Restaurant Name</label>
+              <div className='control'>
+                <input
+                  className='input'
+                  id='restaurantName'
+                  placeholder='Restaurant Name'
+                  value={credentials.restaurantName}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className='field'>
+              <label className='label'>Restaurant Location</label>
+              <div className='control'>
+                <input
+                  className='input'
+                  id='restaurantLocation'
+                  placeholder='Restaurant Location'
+                  value={credentials.restaurantLocation}
                   onChange={handleInputChange}
                 />
               </div>
