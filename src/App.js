@@ -63,9 +63,6 @@ const App = () => {
         <Route path='/register' exact>
           <RegisterPage />
         </Route>
-        <Route path={`/2/report/edit`} exact>
-          <ReportEditPage />
-        </Route>
         <Route path='/:userId/report/view' exact>
           <ReportViewPage />
         </Route>
