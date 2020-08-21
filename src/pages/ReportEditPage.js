@@ -2,24 +2,22 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import LargeHeading from '../components/LargeHeading/LargeHeading';
+import Board from '../components/Board/Board';
 import AuthContext from '../context/AuthContext';
 
-const HomePage = () => {
+const ReportEditPage = () => {
   const auth = useContext(AuthContext);
+  const userId = auth.userId;
 
   return (
     <>
-      <LargeHeading title='HomePage' subtitle='Subtitle' />
+      <LargeHeading title='Submit Your Report' subtitle='Subtitle' />
       <div className='container'>
-        <Link
-          className='button is-primary'
-          to={auth.isLoggedIn ? `/${auth.userId}/report/edit` : '/login'}
-        >
-          Get Your Report Now
-        </Link>
+        <Board />
+        <Link to={`/${userId}/report`}>Get Report</Link>
       </div>
     </>
   );
 };
 
-export default HomePage;
+export default ReportEditPage;

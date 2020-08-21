@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -7,41 +7,84 @@ import {
 } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
-import NewReportPage from './pages/NewReportPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ReportEditPage from './pages/ReportEditPage';
 import ReportResultPage from './pages/ReportResultPage';
 import ReportViewPage from './pages/ReportViewPage';
 import NavBar from './components/NavBar/NavBar';
+import AuthContext from './context/AuthContext';
 
 import './App.sass';
 
-const Routes = () => {
-  return (
-    <Switch>
-      <Route path='/' exact>
-        <HomePage />
-      </Route>
-      <Route path='/reports/new' exact>
-        <NewReportPage />
-      </Route>
-      <Route path='/reports/:reportId/view'>
-        <ReportViewPage />
-      </Route>
-      <Route path='/reports/:reportId'>
-        <ReportResultPage />
-      </Route>
-      <Redirect to='/' />
-    </Switch>
-  );
-};
-
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  const login = useCallback((uid) => {
+    setUserId(uid);
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setUserId(null);
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
+      <Switch>
+        <Route path='/' exact>
+          <HomePage />
+        </Route>
+        <Route path={`/${userId}/report/edit`} exact>
+          <ReportEditPage />
+        </Route>
+        <Route path={`/${userId}/report`} exact>
+          <ReportResultPage />
+        </Route>
+        <Route path='/:userId/report/view' exact>
+          <ReportViewPage />
+        </Route>
+        <Redirect to='/' />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path='/' exact>
+          <HomePage />
+        </Route>
+        <Route path='/login' exact>
+          <LoginPage />
+        </Route>
+        <Route path='/register' exact>
+          <RegisterPage />
+        </Route>
+        <Route path='/:userId/report/view' exact>
+          <ReportViewPage />
+        </Route>
+        <Redirect to='/login' />
+      </Switch>
+    );
+  }
+
   return (
-    <Router>
-      <NavBar />
-      <main>
-        <Routes />
-      </main>
-    </Router>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+        userId: userId,
+        login: login,
+        logout: logout,
+      }}
+    >
+      <Router>
+        <NavBar />
+        <main>{routes}</main>
+      </Router>
+    </AuthContext.Provider>
   );
 };
 
