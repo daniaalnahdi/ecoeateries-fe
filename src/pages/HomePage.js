@@ -8,7 +8,7 @@ const HomePage = () => {
     <>
       <LargeHeading title='HomePage' subtitle='Subtitle' />
       <div className='container'>
-        <Link className='button is-primary' to='/reports/new'>
+        <Link className='button is-primary' to='/reports/:userId/edit'>
           Get Your Report Now
         </Link>
       </div>

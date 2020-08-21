@@ -7,7 +7,7 @@ const ReportViewPage = () => {
       <h1 className='title is-2'>Embedded View Here</h1>
       <Link
         className='button is-primary'
-        to='/reports/123/view'
+        to='/reports/:userId/view'
         target='_blank'
       >
         See Full Report
