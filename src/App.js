@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
 
-function App() {
+import HomePage from './pages/HomePage';
+import NewReportPage from './pages/NewReportPage';
+import ReportResultPage from './pages/ReportResultPage';
+import ReportViewPage from './pages/ReportViewPage';
+import NavBar from './components/NavBar/NavBar';
+
+import './App.sass';
+
+const Routes = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route path='/' exact>
+        <HomePage />
+      </Route>
+      <Route path='/reports/new' exact>
+        <NewReportPage />
+      </Route>
+      <Route path='/reports/:reportId/view'>
+        <ReportViewPage />
+      </Route>
+      <Route path='/reports/:reportId'>
+        <ReportResultPage />
+      </Route>
+      <Redirect to='/' />
+    </Switch>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Router>
+      <NavBar />
+      <main>
+        <Routes />
+      </main>
+    </Router>
+  );
+};
 
 export default App;
