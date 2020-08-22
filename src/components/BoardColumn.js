@@ -1,9 +1,7 @@
 import React from 'react';
 
-import './BoardColumn.scss';
-
 const BoardColumn = ({ title, children, updateGoalStatus, id }) => {
-  const drop = (e) => {
+  const handleOnDrop = (e) => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('card_id');
 
@@ -11,24 +9,25 @@ const BoardColumn = ({ title, children, updateGoalStatus, id }) => {
     card.style.display = 'block';
 
     e.target.appendChild(card);
-    updateGoalStatus(cardId);
+    updateGoalStatus(cardId, id);
   };
 
-  const dragOver = (e) => {
+  const handleOnDragOver = (e) => {
     e.preventDefault();
   };
 
   return (
     <>
-      <div
-        className='column board-column box'
-        id={id}
-        onDrop={drop}
-        onDragOver={dragOver}
-      >
+      <div className='column'>
         <h3 className='title is-4'>{title}</h3>
-
-        {children}
+        <div
+          className='notification board-column'
+          id={id}
+          onDrop={handleOnDrop}
+          onDragOver={handleOnDragOver}
+        >
+          {children}
+        </div>
       </div>
     </>
   );
