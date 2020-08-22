@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -28,10 +28,34 @@ const DUMMY_USERS = [
 
 const HomePage = () => {
   const auth = useContext(AuthContext);
-  const userId = auth.userId;
+  const { userId, isLoggedIn } = auth;
 
-  const restaurantName = DUMMY_RESTAURANT.restaurantName;
-  const restaurantLocation = DUMMY_RESTAURANT.restaurantLocation;
+  const [restaurantName, setRestaurantName] = useState('');
+  const [restaurantLocation, setRestaurantLocation] = useState('');
+
+  useEffect(() => {
+    if (userId) {
+      const url = new URL('http://127.0.0.1:5000/restaurant-info');
+      const params = { userId: userId };
+
+      url.search = new URLSearchParams(params).toString();
+
+      async function getRestaurantInfo() {
+        const responseData = await fetch(url);
+        const responseJson = await responseData.json();
+
+        setRestaurantName(responseJson.restaurantName);
+        setRestaurantLocation(responseJson.restaurantLocation);
+      }
+
+      try {
+        getRestaurantInfo();
+      } catch (err) {
+        //TODO handle errors
+        console.log(err);
+      }
+    }
+  }, [userId]);
 
   const LoggedOutView = () => {
     return (
