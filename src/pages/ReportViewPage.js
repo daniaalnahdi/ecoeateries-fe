@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import HeaderSecondary from '../components/HeaderSecondary';
+import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
 import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 
@@ -61,8 +64,11 @@ const DUMMY_REPORT = {
 
 const ReportViewPage = () => {
   const userId = useParams().userId;
-  const pageUrl = useLocation();
-  const isEmbedded = pageUrl.search.includes('view=embedded');
+
+  const queryParams = useLocation().search;
+  const isEmbedded = queryParams.includes('view=embedded');
+
+  const urlNoParams = window.location.href.split('?')[0];
 
   //check is userId exists
   //if authUser, check if they submitted a report before
@@ -77,14 +83,15 @@ const ReportViewPage = () => {
     return (
       <div className='has-text-centered'>
         <ScoreTotalSection score={totalScore} small />
-        <Link
-          className='button is-primary'
-          //check if domain needs to be appended
-          to={pageUrl.pathname}
+        <a
+          href={urlNoParams}
           target='_blank'
+          rel='noopener noreferrer'
+          className='button is-primary'
         >
+          <FontAwesomeIcon icon={faExternalLinkAlt} className='mr-2' />
           See Full Report
-        </Link>
+        </a>
       </div>
     );
   }
@@ -93,7 +100,20 @@ const ReportViewPage = () => {
     <>
       <HeaderSecondary
         title='EcoEateries Report'
-        subtitle={`${restaurantName} ${restaurantLocation}`}
+        subtitle={
+          <>
+            <RestaurantInfoLabel
+              title={restaurantName}
+              type='name'
+              className=' is-size-4 mb-2'
+            />
+            <RestaurantInfoLabel
+              title={restaurantLocation}
+              type='location'
+              className=' is-size-4'
+            />
+          </>
+        }
       />
       <div className='container'>
         <section className='section'>
