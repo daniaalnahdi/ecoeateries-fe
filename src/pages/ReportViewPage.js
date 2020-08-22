@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -7,16 +7,12 @@ import HeaderSecondary from '../components/HeaderSecondary';
 import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
 import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
+import PageNotFound from '../components/PageNotFound';
+import useRestaurantInfo from '../hooks/restaurant-hook';
 
 //TO FETCH:
 //total score
 //categories with individual score and goals
-// restaurant name and location
-const DUMMY_RESTAURANT = {
-  restaurantName: 'Res Name',
-  restaurantLocation: 'Res Loc',
-};
-
 const DUMMY_REPORT = {
   restaurantScore: 60,
   categories: [
@@ -63,21 +59,42 @@ const DUMMY_REPORT = {
 };
 
 const ReportViewPage = () => {
-  const userId = useParams().userId;
+  const [userId, setUserId] = useState(useParams().userId);
 
   const queryParams = useLocation().search;
   const isEmbedded = queryParams.includes('view=embedded');
-
   const urlNoParams = window.location.href.split('?')[0];
 
-  //check is userId exists
-  //if authUser, check if they submitted a report before
+  useEffect(() => {
+    const url = new URL('http://127.0.0.1:5000/user/exists');
+    const params = { userId: userId };
 
-  //FETCH
-  const restaurantName = DUMMY_RESTAURANT.restaurantName;
-  const restaurantLocation = DUMMY_RESTAURANT.restaurantLocation;
+    url.search = new URLSearchParams(params).toString();
+
+    async function getUser() {
+      const responseData = await fetch(url);
+      const responseJson = await responseData.json();
+
+      setUserId(responseJson.exists === 'true' ? userId : null);
+    }
+
+    try {
+      getUser();
+    } catch (err) {
+      //TODO handle errors
+      console.log(err);
+    }
+  }, [userId]);
+
+  //if authUser, check if they submitted a report before
+  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
+
   const totalScore = DUMMY_REPORT.restaurantScore;
   const categories = DUMMY_REPORT.categories;
+
+  if (!userId) {
+    return <PageNotFound />;
+  }
 
   if (isEmbedded) {
     return (

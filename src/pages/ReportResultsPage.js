@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,62 +8,12 @@ import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet';
 import BadgePreview from '../components/BadgePreview';
-import AuthContext from '../auth/AuthContext';
-import { Link } from 'react-router-dom';
+import useRestaurantInfo from '../hooks/restaurant-hook';
+import AuthContext from '../auth/auth-context';
 
 //TO FETCH:
 //total score
 //categories with individual score and goals
-// restaurant name and location
-const DUMMY_RESTAURANT = {
-  restaurantName: 'Res Name',
-  restaurantLocation: 'Res Loc',
-};
-
-const DUMMY_REPORT = {
-  restaurantScore: 60,
-  categories: [
-    {
-      categoryName: 'Water',
-      categoryScore: '50',
-      categoryId: 1,
-      goals: [
-        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Fix leaks promptyl',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-    {
-      categoryName: 'Recycle',
-      categoryScore: '50',
-      categoryId: 2,
-      goals: [
-        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Fix leaks promptyl',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-    {
-      categoryName: 'Compost',
-      categoryScore: '50',
-      categoryId: 2,
-      goals: [
-        { goalId: 1, goalName: 'Compost waste', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Something else',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-  ],
-};
 
 const ReportResultsPage = () => {
   const auth = useContext(AuthContext);
@@ -71,17 +22,39 @@ const ReportResultsPage = () => {
   const defaultCopyButtonText = 'Copy Report Link';
   const [copyButtonText, setCopyButtonText] = useState(defaultCopyButtonText);
 
-  //FETCH
-  const restaurantName = DUMMY_RESTAURANT.restaurantName;
-  const restaurantLocation = DUMMY_RESTAURANT.restaurantLocation;
-  const totalScore = DUMMY_REPORT.restaurantScore;
-  const categories = DUMMY_REPORT.categories;
+  const { restaurantName } = useRestaurantInfo(userId);
+  const [restaurantScore, setRestaurantScore] = useState(0);
+  const [categories, setCategories] = useState([]);
 
   //APPEND DOMAIN HERE
   const src = `/${userId}/report`;
   const codeSnippet = `<iframe src='${src}?view=embedded' height='335' width='300' title='EcoEateries ${restaurantName} Report'></iframe>`;
 
   //if authUser, check if they submitted a report before
+
+  useEffect(() => {
+    const url = new URL('http://127.0.0.1:5000/report');
+    const params = { userId: userId };
+
+    url.search = new URLSearchParams(params).toString();
+
+    async function getReport() {
+      const responseData = await fetch(url);
+      const responseJson = await responseData.json();
+
+      setRestaurantScore(responseJson.restaurantScore);
+      setCategories((categories) => [
+        ...categories,
+        ...responseJson.categories,
+      ]);
+    }
+    try {
+      getReport();
+    } catch (err) {
+      //TODO handle errors
+      console.log(err);
+    }
+  }, [userId]);
 
   const handleCopyClick = () => {
     var textArea = document.createElement('textarea');
@@ -110,7 +83,7 @@ const ReportResultsPage = () => {
             Your total score is the average of all category scores.
           </p>
           <ScoreTotalSection
-            score={totalScore}
+            score={restaurantScore}
             restaurantName={restaurantName}
           />
           <h3 className='title is-4'>Score Breakdown</h3>

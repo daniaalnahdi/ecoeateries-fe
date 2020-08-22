@@ -7,15 +7,14 @@ import {
 import { faStar as faStarOutline } from '@fortawesome/free-regular-svg-icons';
 
 const ProgressIcon = ({ goalStatus }) => {
-  switch (goalStatus) {
-    case 0.0:
-      return <FontAwesomeIcon icon={faStarOutline} />;
-    case 0.5:
-      return <FontAwesomeIcon icon={faStarHalfAlt} />;
-    case 1.0:
-      return <FontAwesomeIcon icon={faStarSolid} />;
-    default:
+  if (goalStatus === 0.0 || goalStatus === '0.0') {
+    return <FontAwesomeIcon icon={faStarOutline} />;
+  } else if (goalStatus === 0.5 || goalStatus === '0.5') {
+    return <FontAwesomeIcon icon={faStarHalfAlt} />;
+  } else if (goalStatus === 1.0 || goalStatus === '1.0') {
+    return <FontAwesomeIcon icon={faStarSolid} />;
   }
+
   return null;
 };
 

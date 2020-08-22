@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import Logo from './Logo';
-import AuthContext from '../auth/AuthContext';
+import AuthContext from '../auth/auth-context';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);

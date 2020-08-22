@@ -58,7 +58,6 @@ const RegisterPage = () => {
       const responseJson = await responseData.json();
       setIsLoading(false);
 
-      console.log(responseJson);
       if (responseJson.error) {
         setErrorMsg(responseJson.error);
         return;

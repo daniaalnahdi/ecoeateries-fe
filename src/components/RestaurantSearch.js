@@ -3,17 +3,25 @@ import { Link } from 'react-router-dom';
 
 import RestaurantInfoLabel from './RestaurantInfoLabel';
 
-const ReportsSearch = ({ reports }) => {
+const RestaurantSearch = ({ restaurants }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    const results = reports.filter(({ restaurantName }) =>
+    const results = restaurants.filter(({ restaurantName }) =>
       restaurantName.toLowerCase().includes(searchTerm)
     );
 
     setSearchResults(results);
-  }, [reports, searchTerm]);
+  }, [restaurants, searchTerm]);
+  
+  useEffect(() => {
+    const results = restaurants.filter(({ restaurantName }) =>
+      restaurantName.toLowerCase().includes(searchTerm)
+    );
+
+    setSearchResults(results);
+  }, [restaurants, searchTerm]);
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -69,4 +77,4 @@ const ReportsSearch = ({ reports }) => {
   );
 };
 
-export default ReportsSearch;
+export default RestaurantSearch;

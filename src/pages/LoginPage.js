@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AuthContext from '../auth/AuthContext';
+import AuthContext from '../auth/auth-context';
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
@@ -9,6 +9,7 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e) => {
@@ -41,12 +42,13 @@ const LoginPage = () => {
     };
 
     try {
+      setIsLoading(true);
       const responseData = await fetch(
         'http://127.0.0.1:5000/users/login',
         request
       );
-
       const responseJson = await responseData.json();
+      setIsLoading(false);
 
       if (responseJson.error) {
         setErrorMsg(responseJson.error);
@@ -103,7 +105,12 @@ const LoginPage = () => {
                 />
               </div>
             </div>
-            <button className='button is-info is-medium mt-2' type='submit'>
+            <button
+              className={`button is-info is-medium mt-2 ${
+                isLoading ? 'is-loading' : ''
+              }`}
+              type='submit'
+            >
               Login
             </button>
           </form>

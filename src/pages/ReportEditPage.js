@@ -1,42 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import HeaderPrimary from '../components/HeaderPrimary';
 import BoardColumn from '../components/BoardColumn';
 import BoardCard from '../components/BoardCard';
-import AuthContext from '../auth/AuthContext';
-
-const DUMMY_GOALS = [
-  {
-    goalId: 11,
-    goalName: 'Conserve water',
-    goalCategory: 'Water',
-    goalStatus: 0.0,
-  },
-  {
-    goalId: 22,
-    goalName: 'Fix leaks promptyl',
-    goalCategory: 'Water',
-    goalStatus: 0.5,
-  },
-  {
-    goalId: 33,
-    goalName: 'Use recycled utinsels',
-    goalCategory: 'Recycle',
-    goalStatus: 0.5,
-  },
-  {
-    goalId: 44,
-    goalName: 'Recycle 50% of waster',
-    goalCategory: 'Recycle',
-    goalStatus: 1.0,
-  },
-];
+import AuthContext from '../auth/auth-context';
 
 const ReportEditPage = () => {
   const auth = useContext(AuthContext);
   const userId = auth.userId;
   //add last updated timestamp
+
+  const [goalList, setGoalList] = useState([]);
+
+  useEffect(() => {
+    const url = new URL('http://127.0.0.1:5000/user/goals');
+    const params = { userId: userId };
+
+    url.search = new URLSearchParams(params).toString();
+
+    async function getGoalList() {
+      const responseData = await fetch(url);
+      const responseJson = await responseData.json();
+
+      setGoalList((goalList) => [...goalList, ...responseJson.goalList]);
+    }
+    try {
+      getGoalList();
+    } catch (err) {
+      //TODO handle errors
+      console.log(err);
+    }
+  }, [userId]);
 
   const renderGoalCard = (goal) => {
     const { goalId, goalName, goalCategory } = goal;
@@ -50,10 +45,30 @@ const ReportEditPage = () => {
     );
   };
 
-  const updateGoalStatus = (goalId, colId) => {
-    //fetch and update goal here
-    console.log(colId);
-    console.log(goalId);
+  const updateGoalStatus = async (goalId, colId) => {
+    const request = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        goalId: goalId,
+        newStatus: colId,
+      }),
+    };
+
+    try {
+      const responseData = await fetch(
+        'http://127.0.0.1:5000/user/goals',
+        request
+      );
+    } catch (err) {
+      //TODO handle error
+      console.log(err);
+      return;
+    }
   };
 
   return (
@@ -73,27 +88,27 @@ const ReportEditPage = () => {
               id='0.0'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.filter(
-                (goal) => goal.goalStatus === 0.0
-              ).map((goal) => renderGoalCard(goal))}
+              {goalList
+                .filter((goal) => goal.goalStatus === '0.0')
+                .map((goal) => renderGoalCard(goal))}
             </BoardColumn>
             <BoardColumn
               title='In Progress'
               id='0.5'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.filter(
-                (goal) => goal.goalStatus === 0.5
-              ).map((goal) => renderGoalCard(goal))}
+              {goalList
+                .filter((goal) => goal.goalStatus === '0.5')
+                .map((goal) => renderGoalCard(goal))}
             </BoardColumn>
             <BoardColumn
               title='Done'
               id='1.0'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.filter(
-                (goal) => goal.goalStatus === 0.0
-              ).map((goal) => renderGoalCard(goal))}
+              {goalList
+                .filter((goal) => goal.goalStatus === '1.0')
+                .map((goal) => renderGoalCard(goal))}
             </BoardColumn>
           </div>
         </section>
