@@ -32,10 +32,10 @@ const LoginPage = () => {
   };
   return (
     <div className='container'>
-      <div className='columns is-centered'>
-        <div className='column is-half'>
+      <div className='my-6 mx-6 columns is-centered'>
+        <div className=' px-6 py-6 notification column is-half '>
           <h1 className='title is-2'>Login</h1>
-          <p className='subtitle'>
+          <p className='subtitle mt-1'>
             Don't have an account? {''}
             <Link to='/register'>Register here.</Link>
           </p>
@@ -73,7 +73,7 @@ const LoginPage = () => {
                 />
               </div>
             </div>
-            <button className='button is-link' type='submit'>
+            <button className='button is-info is-medium mt-2' type='submit'>
               Login
             </button>
           </form>

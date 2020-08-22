@@ -10,12 +10,12 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ReportEditPage from './pages/ReportEditPage';
-import ReportResultPage from './pages/ReportResultPage';
+import ReportResultsPage from './pages/ReportResultsPage';
 import ReportViewPage from './pages/ReportViewPage';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/NavBar';
 import AuthContext from './context/AuthContext';
 
-import './App.sass';
+import './App.scss';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,13 +39,13 @@ const App = () => {
         <Route path='/' exact>
           <HomePage />
         </Route>
-        <Route path={`/${userId}/report/edit`} exact>
+        <Route path='/report/edit' exact>
           <ReportEditPage />
         </Route>
-        <Route path={`/${userId}/report`} exact>
-          <ReportResultPage />
+        <Route path='/report/results' exact>
+          <ReportResultsPage />
         </Route>
-        <Route path='/:userId/report/view' exact>
+        <Route path='/:userId/report' exact>
           <ReportViewPage />
         </Route>
         <Redirect to='/' />
@@ -63,7 +63,7 @@ const App = () => {
         <Route path='/register' exact>
           <RegisterPage />
         </Route>
-        <Route path='/:userId/report/view' exact>
+        <Route path='/:userId/report' exact>
           <ReportViewPage />
         </Route>
         <Redirect to='/login' />

@@ -37,17 +37,17 @@ const RegisterPage = () => {
   };
   return (
     <div className='container'>
-      <div className='columns is-centered'>
-        <div className='column is-half'>
+      <div className='my-6 mx-6 columns is-centered'>
+        <div className=' px-6 py-6 notification column is-half '>
           <h1 className='title is-2'>Register</h1>
-          <p className='subtitle'>
+          <p className='subtitle mt-1'>
             Already have an account? {''}
             <Link to='/login'>Login here.</Link>
           </p>
           {displaySuccess && (
             <article className='message is-success'>
               <div className='message-body'>
-                Register success! Login to generate your report.
+                Register success! <Link to='/login'>Login</Link> to start your report.
               </div>
             </article>
           )}
@@ -109,7 +109,7 @@ const RegisterPage = () => {
                 />
               </div>
             </div>
-            <button className='button is-link' type='submit'>
+            <button className='button is-info is-medium mt-2' type='submit'>
               Register
             </button>
           </form>

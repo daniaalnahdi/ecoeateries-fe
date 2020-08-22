@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './BadgePreview.scss';
-
 const BadgePreview = ({ codeSnippet }) => {
   return (
     <div

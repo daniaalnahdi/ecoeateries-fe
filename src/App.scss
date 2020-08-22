@@ -1,0 +1,102 @@
+@charset "utf-8";
+@import '../node_modules/bulma/bulma.sass';
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+// // Set your brand colors
+// $purple: #8a4d76;
+// $pink: #fa7c91;
+// $brown: #757763;
+// $beige-light: #d0d1cd;
+// $beige-lighter: #eff0eb;
+
+// // Update Bulma's global variables
+// $family-sans-serif: 'Nunito', sans-serif;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+// $primary: $purple;
+// $link: $pink;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+// // Update some of Bulma's component variables
+// $body-background-color: $beige-lighter;
+// $control-border-width: 2px;
+// $input-border-color: transparent;
+// $input-shadow: none;
+$box-radius: 20px;
+
+// Import only what you need from Bulma
+@import '../node_modules/bulma/sass/utilities/_all.sass';
+@import '../node_modules/bulma/sass/base/_all.sass';
+@import '../node_modules/bulma/sass/elements/button.sass';
+@import '../node_modules/bulma/sass/elements/container.sass';
+@import '../node_modules/bulma/sass/elements/form.sass';
+@import '../node_modules/bulma/sass/elements/title.sass';
+@import '../node_modules/bulma/sass/components/navbar.sass';
+@import '../node_modules/bulma/sass/layout/hero.sass';
+@import '../node_modules/bulma/sass/layout/section.sass';
+
+//Weird Bulma Styling Fixes
+.input,
+.textarea,
+.select select {
+  border-color: $input-border-color !important;
+}
+
+//Custom CSS
+//Nav
+.navbar-item,
+.navbar-link {
+  align-items: center !important;
+  display: flex !important;
+}
+
+//Score Ring
+.score-ring-bg {
+  fill: none;
+  stroke: rgb(213, 213, 213);
+  stroke-width: 4;
+}
+
+.score-ring-circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke: $primary;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.score-ring-percentage {
+  fill: $grey-dark;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
+// Edit Page
+.board-column {
+  height: 40em;
+  overflow: hidden;
+}
+.board-card {
+  cursor: pointer;
+}
+
+// Result Page
+.badge-preview {
+  display: inline-block !important;
+}
+
+// View Result Page
+@media only screen and (max-width: 300px) {
+  //Match iframe dimensions
+  .hide-nav {
+    display: none !important;
+  }
+}
