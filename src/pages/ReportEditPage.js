@@ -11,25 +11,25 @@ const DUMMY_GOALS = [
     goalId: 11,
     goalName: 'Conserve water',
     goalCategory: 'Water',
-    status: 0.0,
+    goalStatus: 0.0,
   },
   {
     goalId: 22,
     goalName: 'Fix leaks promptyl',
     goalCategory: 'Water',
-    status: 0.5,
+    goalStatus: 0.5,
   },
   {
     goalId: 33,
     goalName: 'Use recycled utinsels',
     goalCategory: 'Recycle',
-    status: 0.5,
+    goalStatus: 0.5,
   },
   {
     goalId: 44,
     goalName: 'Recycle 50% of waster',
     goalCategory: 'Recycle',
-    status: 1.0,
+    goalStatus: 1.0,
   },
 ];
 
@@ -38,18 +38,16 @@ const ReportEditPage = () => {
   const userId = auth.userId;
   //add last updated timestamp
 
-  const renderGoalCard = (goal, statusReq) => {
-    const { goalId, goalName, goalCategory, status } = goal;
-    if (status === statusReq) {
-      return (
-        <BoardCard
-          key={goalId}
-          goalId={goalId}
-          goalName={goalName}
-          goalCategory={goalCategory}
-        />
-      );
-    }
+  const renderGoalCard = (goal) => {
+    const { goalId, goalName, goalCategory } = goal;
+    return (
+      <BoardCard
+        key={goalId}
+        goalId={goalId}
+        goalName={goalName}
+        goalCategory={goalCategory}
+      />
+    );
   };
 
   const updateGoalStatus = (goalId, colId) => {
@@ -71,25 +69,31 @@ const ReportEditPage = () => {
           <div className='columns'>
             <BoardColumn
               className='column'
-              title='Not Done'
-              id='col-1'
+              title='Not Started'
+              id='0.0'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.map((goal) => renderGoalCard(goal, 0.0))}
+              {DUMMY_GOALS.filter(
+                (goal) => goal.goalStatus === 0.0
+              ).map((goal) => renderGoalCard(goal))}
             </BoardColumn>
             <BoardColumn
               title='In Progress'
-              id='col-2'
+              id='0.5'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.map((goal) => renderGoalCard(goal, 0.5))}
+              {DUMMY_GOALS.filter(
+                (goal) => goal.goalStatus === 0.5
+              ).map((goal) => renderGoalCard(goal))}
             </BoardColumn>
             <BoardColumn
               title='Done'
-              id='col-3'
+              id='1.0'
               updateGoalStatus={updateGoalStatus}
             >
-              {DUMMY_GOALS.map((goal) => renderGoalCard(goal, 1.0))}
+              {DUMMY_GOALS.filter(
+                (goal) => goal.goalStatus === 0.0
+              ).map((goal) => renderGoalCard(goal))}
             </BoardColumn>
           </div>
         </section>

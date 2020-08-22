@@ -1,32 +1,7 @@
 @charset "utf-8";
 @import '../node_modules/bulma/bulma.sass';
-// Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
-// // Set your brand colors
-// $purple: #8a4d76;
-// $pink: #fa7c91;
-// $brown: #757763;
-// $beige-light: #d0d1cd;
-// $beige-lighter: #eff0eb;
-
-// // Update Bulma's global variables
-// $family-sans-serif: 'Nunito', sans-serif;
-// $grey-dark: $brown;
-// $grey-light: $beige-light;
-// $primary: $purple;
-// $link: $pink;
-// $widescreen-enabled: false;
-// $fullhd-enabled: false;
-
-// // Update some of Bulma's component variables
-// $body-background-color: $beige-lighter;
-// $control-border-width: 2px;
-// $input-border-color: transparent;
-// $input-shadow: none;
-$box-radius: 20px;
-
-// Import only what you need from Bulma
 @import '../node_modules/bulma/sass/utilities/_all.sass';
 @import '../node_modules/bulma/sass/base/_all.sass';
 @import '../node_modules/bulma/sass/elements/button.sass';
@@ -46,10 +21,15 @@ $box-radius: 20px;
 
 //Custom CSS
 //Nav
-.navbar-item,
-.navbar-link {
-  align-items: center !important;
-  display: flex !important;
+nav a {
+  font-size: 1.2rem !important;
+  margin: 0.8rem 0;
+}
+
+//Logo
+.nav-logo,
+.logo-icon {
+  color: $primary;
 }
 
 //Score Ring
@@ -99,4 +79,20 @@ $box-radius: 20px;
   .hide-nav {
     display: none !important;
   }
+}
+
+//Dashboard Cards
+.dashboard-card {
+  height: 300px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.dashboard-card:hover {
+  transform: scale(1.02);
+}
+
+//Search results
+.search-results {
+  min-height: 40em;
 }

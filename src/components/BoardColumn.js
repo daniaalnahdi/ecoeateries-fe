@@ -1,4 +1,5 @@
 import React from 'react';
+import ProgressIcon from '../components/ProgressIcon';
 
 const BoardColumn = ({ title, children, updateGoalStatus, id }) => {
   const handleOnDrop = (e) => {
@@ -19,7 +20,10 @@ const BoardColumn = ({ title, children, updateGoalStatus, id }) => {
   return (
     <>
       <div className='column'>
-        <h3 className='title is-4'>{title}</h3>
+        <h3 className='title is-4'>
+          <ProgressIcon goalStatus={parseFloat(id)} />
+          <span className='ml-3'>{title}</span>
+        </h3>
         <div
           className='notification board-column'
           id={id}

@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons';
 
 import HeaderPrimary from '../components/HeaderPrimary';
 import ScoreTotalSection from '../components/ScoreTotalBanner';
@@ -6,6 +8,7 @@ import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet';
 import BadgePreview from '../components/BadgePreview';
 import AuthContext from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 //TO FETCH:
 //total score
@@ -124,12 +127,22 @@ const ReportResultsPage = () => {
 
               <h3 className='title is-4'>Share Direct Link</h3>
               <button
-                className='button is-info is-light mb-5 is-medium'
+                className='button is-info is-light mb-5 mr-2 is-medium'
                 onClick={handleCopyClick}
-                style={{ width: '200px' }}
+                style={{ width: '250px' }}
               >
+                <FontAwesomeIcon icon={faCopy} className='mr-3' />
                 {copyButtonText}
               </button>
+              <Link
+                to={src}
+                target='_blank'
+                className='button is-info is-inverted mb-5 is-medium'
+                style={{ width: '180px' }}
+              >
+                <FontAwesomeIcon icon={faLink} className='mr-3' />
+                Go to Link
+              </Link>
               <h3 className='title is-4'>Embed in Website</h3>
               <p className='is-size-5 mb-4'>
                 Add this code snippet to your website's code, between the{' '}
