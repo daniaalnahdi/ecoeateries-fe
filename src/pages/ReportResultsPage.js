@@ -9,50 +9,57 @@ import AuthContext from '../context/AuthContext';
 
 //TO FETCH:
 //total score
-//categories with individual scores and goals
+//categories with individual score and goals
 // restaurant name and location
+const DUMMY_RESTAURANT = {
+  restaurantName: 'Res Name',
+  restaurantLocation: 'Res Loc',
+};
 
-const DUMMY_CATEGORIES = [
-  {
-    categoryName: 'Water',
-    categoryScore: '50',
-    categoryId: 1,
-    goals: [
-      { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-      {
-        goalId: 2,
-        goalName: 'Fix leaks promptyl',
-        goalStatus: 0.5,
-      },
-    ],
-  },
-  {
-    categoryName: 'Recycle',
-    categoryScore: '50',
-    categoryId: 2,
-    goals: [
-      { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-      {
-        goalId: 2,
-        goalName: 'Fix leaks promptyl',
-        goalStatus: 0.5,
-      },
-    ],
-  },
-  {
-    categoryName: 'Compost',
-    categoryScore: '50',
-    categoryId: 2,
-    goals: [
-      { goalId: 1, goalName: 'Compost waste', goalStatus: 0.0 },
-      {
-        goalId: 2,
-        goalName: 'Something else',
-        goalStatus: 0.5,
-      },
-    ],
-  },
-];
+const DUMMY_REPORT = {
+  restaurantScore: 60,
+  categories: [
+    {
+      categoryName: 'Water',
+      categoryScore: '50',
+      categoryId: 1,
+      goals: [
+        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
+        {
+          goalId: 2,
+          goalName: 'Fix leaks promptyl',
+          goalStatus: 0.5,
+        },
+      ],
+    },
+    {
+      categoryName: 'Recycle',
+      categoryScore: '50',
+      categoryId: 2,
+      goals: [
+        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
+        {
+          goalId: 2,
+          goalName: 'Fix leaks promptyl',
+          goalStatus: 0.5,
+        },
+      ],
+    },
+    {
+      categoryName: 'Compost',
+      categoryScore: '50',
+      categoryId: 2,
+      goals: [
+        { goalId: 1, goalName: 'Compost waste', goalStatus: 0.0 },
+        {
+          goalId: 2,
+          goalName: 'Something else',
+          goalStatus: 0.5,
+        },
+      ],
+    },
+  ],
+};
 
 const ReportResultsPage = () => {
   const auth = useContext(AuthContext);
@@ -61,9 +68,11 @@ const ReportResultsPage = () => {
   const defaultCopyButtonText = 'Copy Report Link';
   const [copyButtonText, setCopyButtonText] = useState(defaultCopyButtonText);
 
-  //TO FETCH
-  const totalScore = 50;
-  const restaurantName = 'Restaurant Name';
+  //FETCH
+  const restaurantName = DUMMY_RESTAURANT.restaurantName;
+  const restaurantLocation = DUMMY_RESTAURANT.restaurantLocation;
+  const totalScore = DUMMY_REPORT.restaurantScore;
+  const categories = DUMMY_REPORT.categories;
 
   //APPEND DOMAIN HERE
   const src = `/${userId}/report`;
@@ -105,7 +114,7 @@ const ReportResultsPage = () => {
           <p className='is-size-5 mb-4'>
             These are the individual scores for each category.
           </p>
-          <ScoreBreakdownGrid categories={DUMMY_CATEGORIES} />
+          <ScoreBreakdownGrid categories={categories} />
         </section>
         <hr />
         <section className='section'>

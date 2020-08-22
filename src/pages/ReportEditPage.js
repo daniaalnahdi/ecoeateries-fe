@@ -7,16 +7,26 @@ import BoardCard from '../components/BoardCard';
 import AuthContext from '../context/AuthContext';
 
 const DUMMY_GOALS = [
-  { goalId: 1, goalName: 'Conserve water', goalCategory: 'Water', status: 0.0 },
-  { goalId: 2, goalName: 'Fix leaks promptyl', goalCategory: 'Water', status: 0.5 },
   {
-    goalId: 3,
+    goalId: 11,
+    goalName: 'Conserve water',
+    goalCategory: 'Water',
+    status: 0.0,
+  },
+  {
+    goalId: 22,
+    goalName: 'Fix leaks promptyl',
+    goalCategory: 'Water',
+    status: 0.5,
+  },
+  {
+    goalId: 33,
     goalName: 'Use recycled utinsels',
     goalCategory: 'Recycle',
     status: 0.5,
   },
   {
-    goalId: 4,
+    goalId: 44,
     goalName: 'Recycle 50% of waster',
     goalCategory: 'Recycle',
     status: 1.0,
