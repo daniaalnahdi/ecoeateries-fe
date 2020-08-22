@@ -13,7 +13,7 @@ import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
 import ReportsSearch from '../components/ReportsSearch';
 import DashboardCard from '../components/DashboardCard';
 import MainIllustration from '../assets/MainIllustration';
-import AuthContext from '../context/AuthContext';
+import AuthContext from '../auth/AuthContext';
 
 const DUMMY_RESTAURANT = {
   restaurantName: 'Res Name',

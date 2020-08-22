@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderPrimary from '../components/HeaderPrimary';
 import BoardColumn from '../components/BoardColumn';
 import BoardCard from '../components/BoardCard';
-import AuthContext from '../context/AuthContext';
+import AuthContext from '../auth/AuthContext';
 
 const DUMMY_GOALS = [
   {

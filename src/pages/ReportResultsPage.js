@@ -7,7 +7,7 @@ import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet';
 import BadgePreview from '../components/BadgePreview';
-import AuthContext from '../context/AuthContext';
+import AuthContext from '../auth/AuthContext';
 import { Link } from 'react-router-dom';
 
 //TO FETCH:

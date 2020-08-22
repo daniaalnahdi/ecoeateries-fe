@@ -13,7 +13,7 @@ import ReportEditPage from './pages/ReportEditPage';
 import ReportResultsPage from './pages/ReportResultsPage';
 import ReportViewPage from './pages/ReportViewPage';
 import NavBar from './components/NavBar';
-import AuthContext from './context/AuthContext';
+import AuthContext from './auth/AuthContext';
 
 import './App.scss';
 
