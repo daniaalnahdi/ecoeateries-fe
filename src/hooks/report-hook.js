@@ -6,7 +6,7 @@ const useReportInfo = (userId) => {
 
     useEffect(() => {
         if (userId) {
-          const url = new URL('http://127.0.0.1:5000/report');
+          const url = new URL('http://127.0.0.1:5000/user/report');
           const params = { userId: userId };
     
           url.search = new URLSearchParams(params).toString();

@@ -6,7 +6,7 @@ const useRestaurantInfo = (userId) => {
 
   useEffect(() => {
     if (userId) {
-      const url = new URL('http://127.0.0.1:5000/restaurant-info');
+      const url = new URL('http://127.0.0.1:5000/user/restaurant-info');
       const params = { userId: userId };
 
       url.search = new URLSearchParams(params).toString();

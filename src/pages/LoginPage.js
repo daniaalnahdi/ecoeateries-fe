@@ -44,7 +44,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const responseData = await fetch(
-        'http://127.0.0.1:5000/users/login',
+        'http://127.0.0.1:5000/login',
         request
       );
       const responseJson = await responseData.json();

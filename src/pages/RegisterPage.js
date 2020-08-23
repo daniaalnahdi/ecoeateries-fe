@@ -51,7 +51,7 @@ const RegisterPage = () => {
     try {
       setIsLoading(true);
       const responseData = await fetch(
-        'http://127.0.0.1:5000/users/register',
+        'http://127.0.0.1:5000/register',
         request
       );
 
