@@ -12,7 +12,7 @@ const Dashboard = ({userId}) => {
   return (
     <div className='columns is-vcentered'>
       <DashboardCard
-        title='Get New Report'
+        title='Update Progress'
         subtitle='Update your progress and generate a new report.'
         src='/report/edit'
       >
@@ -20,14 +20,14 @@ const Dashboard = ({userId}) => {
       </DashboardCard>
       <DashboardCard
         title='Review and Share'
-        subtitle='Review your last saved report and learn how to share it.'
+        subtitle='Review your latest report and share them online.'
         src='/report/results'
       >
         <FontAwesomeIcon icon={faShareSquare} />
       </DashboardCard>
       <DashboardCard
         title='View Official Report'
-        subtitle='View the official report that is public for viewing.'
+        subtitle='View the official report that your customers are seeing.'
         src={`/${userId}/report`}
       >
         <FontAwesomeIcon icon={faEye} />

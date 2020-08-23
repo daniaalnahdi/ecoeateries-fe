@@ -33,7 +33,7 @@ const RestaurantSearch = ({ restaurants }) => {
     <>
       <div className='columns' />
       <div className='column is-half'>
-        <h2 className='title is-3'>See how others scored</h2>
+        <h2 className='title is-2 mb-6'>Search a green restaurant</h2>
         <div className='field'>
           <p className='control has-icons-left has-icons-right'>
             <input

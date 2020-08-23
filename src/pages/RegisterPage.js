@@ -89,8 +89,7 @@ const RegisterPage = () => {
           {displaySuccess && (
             <article className='message is-success'>
               <div className='message-body'>
-                Register success! <Link to='/login'>Login</Link> to start your
-                report.
+                Register success! <Link to='/login'>Login</Link> to get started.
               </div>
             </article>
           )}

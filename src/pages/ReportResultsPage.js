@@ -64,13 +64,13 @@ const ReportResultsPage = () => {
       <>
         <HeaderPrimary
           title='Your Results'
-          subtitle='View your most recent results and share them.'
+          subtitle='View and share your latest results.'
         />
         <div className='container'>
           <LargeNotice
             title={`No report found (yet)!`}
-            subtitle='Start your report to track your progress and share your results.'
-            buttonTitle='New Report'
+            subtitle='Update your progress and generate a report to view and share your results.'
+            buttonTitle='Update Progress'
             buttonSrc='/report/edit'
           />
         </div>

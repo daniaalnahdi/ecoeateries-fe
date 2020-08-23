@@ -99,10 +99,10 @@ const ReportViewPage = () => {
               title='No report found (yet)!'
               subtitle={
                 sameUser
-                  ? 'Start your report to track your progress and share your results.'
+                  ? 'Start by tracking your progress to generate your report.'
                   : `Are you ${restaurantName}? Login to get and share your report.`
               }
-              buttonTitle='New Report'
+              buttonTitle='Update Progress'
               buttonSrc='/report/edit'
             />
           ) : (

@@ -60,8 +60,7 @@ const HomePage = () => {
             <div className='column'>
               <Logo className='title is-1' />
               <p className='subtitle is-3 my-5'>
-                Some catchy tagline about us helping restaurants with being
-                sustainable and goal-setting etc.
+                Help your business turn over a new leaf.
               </p>
               <Link className='button is-primary is-large mt-3' to='/login'>
                 Get Your Report
@@ -73,7 +72,14 @@ const HomePage = () => {
                 Learn More
               </Link>
               <p className='subtitle is-6 mt-4'>
-                Adapted on blah system, link it here
+                Adapted from the {''}
+                <a
+                  href='https://www.dinegreen.com/certification-standards'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  GRA Certification Standards
+                </a>
               </p>
             </div>
             <div className='column'>
@@ -117,8 +123,8 @@ const HomePage = () => {
                 {!reportTimestamp ? (
                   <LargeNotice
                     title='Welcome to EcoEateries!'
-                    subtitle='Start your report now.'
-                    buttonTitle='New Report'
+                    subtitle='Track goals, see results, and share progress.'
+                    buttonTitle='Get Started'
                     buttonSrc='/report/edit'
                   />
                 ) : (

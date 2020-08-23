@@ -10,12 +10,12 @@ const NavBar = () => {
   const LoggedOutNav = () => {
     return (
       <>
-        <div className='navbar-item'>
-          <Link to='/register'>Register</Link>
+        <div className='navbar-item '>
+          <Link to='/login'>Login</Link>
         </div>
         <div className='navbar-item '>
-          <Link to='/login' className='button is-primary is-light'>
-            Login
+          <Link to='/register' className=' button is-primary is-light'>
+            Register
           </Link>
         </div>
       </>
@@ -30,7 +30,7 @@ const NavBar = () => {
         </div>
         <div className='navbar-item '>
           <Link to='/report/edit' className='button is-primary is-light'>
-            New Report
+            Update Progress
           </Link>
         </div>
         <div className='navbar-item '>
@@ -58,16 +58,12 @@ const NavBar = () => {
           </div>
         </div>
         <div className='navbar-start'>
-        <div className='navbar-item'>
-          <Link to='/' >
-            Home
-          </Link>
-        </div>
-        <div className='navbar-item'>
-          <Link to='/about'>
-            About
-          </Link>
-        </div>
+          <div className='navbar-item'>
+            <Link to='/'>{auth.isLoggedIn ? 'Dashboard' : 'Home'}</Link>
+          </div>
+          <div className='navbar-item'>
+            <Link to='/about'>About</Link>
+          </div>
         </div>
         <div className='navbar-end'>
           {auth.isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}

@@ -100,19 +100,19 @@ const ReportEditPage = (props) => {
     <>
       <HeaderPrimary
         title={
-          !!reportTimestamp ? 'Update Your Progress' : 'Start Your Progress'
+          !!reportTimestamp ? 'Update Your Progress' : 'Start Tracking'
         }
         subtitle={
           !!reportTimestamp
-            ? `Last Updated: ${reportTimestamp}`
-            : 'Evaluate and see your current progress.'
+            ? `Report Last Generated: ${reportTimestamp}`
+            : 'Evaluate your current progress and start working towards your goals.'
         }
       />
       <div className='container'>
         <section className='section'>
           <div className='columns is-centered is-vcentered my-3'>
             <div className='column is-half has-text-centered'>
-              <div className='subtitle is-3'>All done?</div>
+              <div className='subtitle is-3'>Ready?</div>
               <button
                 className='button has-text-weight-semibold is-primary is-large mt-1'
                 onClick={handleReportSubmit}
