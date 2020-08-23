@@ -29,13 +29,13 @@ const NavBar = () => {
           <Link to={`/${auth.userId}/report`}>Your Report</Link>
         </div>
         <div className='navbar-item '>
-          <Link to={`/report/results`} className='button is-info is-light'>
-            Share Report
+          <Link to='/report/edit' className='button is-primary is-light'>
+            New Report
           </Link>
         </div>
         <div className='navbar-item '>
-          <Link to='/report/edit' className='button is-primary is-light'>
-            New Report
+          <Link to={`/report/results`} className='button is-info is-light'>
+            Share Report
           </Link>
         </div>
         <div className='navbar-item'>

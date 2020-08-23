@@ -64,6 +64,8 @@ const ReportEditPage = () => {
         'http://127.0.0.1:5000/user/goals',
         request
       );
+      const responseJson = await responseData.json();
+      console.log(responseJson.message);
     } catch (err) {
       //TODO handle error
       console.log(err);

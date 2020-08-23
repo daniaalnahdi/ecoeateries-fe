@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,9 +25,8 @@ const ReportResultsPage = () => {
   const [restaurantScore, setRestaurantScore] = useState(0);
   const [categories, setCategories] = useState([]);
 
-  //APPEND DOMAIN HERE
-  const src = `/${userId}/report`;
-  const codeSnippet = `<iframe src='${src}?view=embedded' height='335' width='300' title='EcoEateries ${restaurantName} Report'></iframe>`;
+  const reportViewUrl = `${window.location.protocol}//${window.location.host}/${userId}/report`;
+  const codeSnippet = `<iframe src='${reportViewUrl}?view=embedded' height='335' width='300' title='EcoEateries ${restaurantName} Report'></iframe>`;
 
   //if authUser, check if they submitted a report before
 
@@ -58,7 +56,7 @@ const ReportResultsPage = () => {
 
   const handleCopyClick = () => {
     var textArea = document.createElement('textarea');
-    textArea.value = src;
+    textArea.value = reportViewUrl;
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('copy');
@@ -107,15 +105,16 @@ const ReportResultsPage = () => {
                 <FontAwesomeIcon icon={faCopy} className='mr-3' />
                 {copyButtonText}
               </button>
-              <Link
-                to={src}
+              <a
+                href={reportViewUrl}
                 target='_blank'
+                rel='noopener noreferrer'
                 className='button is-info is-inverted mb-5 is-medium'
                 style={{ width: '180px' }}
               >
                 <FontAwesomeIcon icon={faLink} className='mr-3' />
                 Go to Link
-              </Link>
+              </a>
               <h3 className='title is-4'>Embed in Website</h3>
               <p className='is-size-5 mb-4'>
                 Add this code snippet to your website's code, between the{' '}
