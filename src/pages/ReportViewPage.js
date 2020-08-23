@@ -9,54 +9,12 @@ import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import PageNotFound from '../components/PageNotFound';
 import useRestaurantInfo from '../hooks/restaurant-hook';
+import useReportInfo from '../hooks/report-hook';
+
 
 //TO FETCH:
 //total score
 //categories with individual score and goals
-const DUMMY_REPORT = {
-  restaurantScore: 60,
-  categories: [
-    {
-      categoryName: 'Water',
-      categoryScore: '50',
-      categoryId: 1,
-      goals: [
-        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Fix leaks promptyl',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-    {
-      categoryName: 'Recycle',
-      categoryScore: '50',
-      categoryId: 2,
-      goals: [
-        { goalId: 1, goalName: 'Conserve water', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Fix leaks promptyl',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-    {
-      categoryName: 'Compost',
-      categoryScore: '50',
-      categoryId: 2,
-      goals: [
-        { goalId: 1, goalName: 'Compost waste', goalStatus: 0.0 },
-        {
-          goalId: 2,
-          goalName: 'Something else',
-          goalStatus: 0.5,
-        },
-      ],
-    },
-  ],
-};
 
 const ReportViewPage = () => {
   const [userId, setUserId] = useState(useParams().userId);
@@ -64,6 +22,8 @@ const ReportViewPage = () => {
   const queryParams = useLocation().search;
   const isEmbedded = queryParams.includes('view=embedded');
   const urlNoParams = window.location.href.split('?')[0];
+
+  const {categories, restaurantScore} = useReportInfo(userId)
 
   useEffect(() => {
     const url = new URL('http://127.0.0.1:5000/user/exists');
@@ -84,13 +44,11 @@ const ReportViewPage = () => {
       //TODO handle errors
       console.log(err);
     }
+
   }, [userId]);
 
   //if authUser, check if they submitted a report before
   const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
-
-  const totalScore = DUMMY_REPORT.restaurantScore;
-  const categories = DUMMY_REPORT.categories;
 
   if (!userId) {
     return <PageNotFound />;
@@ -99,7 +57,7 @@ const ReportViewPage = () => {
   if (isEmbedded) {
     return (
       <div className='has-text-centered'>
-        <ScoreTotalSection score={totalScore} small />
+        <ScoreTotalSection score={restaurantScore} small />
         <a
           href={urlNoParams}
           target='_blank'
@@ -135,7 +93,7 @@ const ReportViewPage = () => {
       <div className='container'>
         <section className='section'>
           <ScoreTotalSection
-            score={totalScore}
+            score={restaurantScore}
             restaurantName={restaurantName}
           />
         </section>

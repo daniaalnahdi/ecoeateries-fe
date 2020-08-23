@@ -8,6 +8,7 @@ import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet';
 import BadgePreview from '../components/BadgePreview';
 import useRestaurantInfo from '../hooks/restaurant-hook';
+import useReportInfo from '../hooks/report-hook';
 import AuthContext from '../auth/auth-context';
 
 //TO FETCH:
@@ -22,37 +23,12 @@ const ReportResultsPage = () => {
   const [copyButtonText, setCopyButtonText] = useState(defaultCopyButtonText);
 
   const { restaurantName } = useRestaurantInfo(userId);
-  const [restaurantScore, setRestaurantScore] = useState(0);
-  const [categories, setCategories] = useState([]);
+  const {categories, restaurantScore} = useReportInfo(userId)
 
   const reportViewUrl = `${window.location.protocol}//${window.location.host}/${userId}/report`;
   const codeSnippet = `<iframe src='${reportViewUrl}?view=embedded' height='335' width='300' title='EcoEateries ${restaurantName} Report'></iframe>`;
 
   //if authUser, check if they submitted a report before
-
-  useEffect(() => {
-    const url = new URL('http://127.0.0.1:5000/report');
-    const params = { userId: userId };
-
-    url.search = new URLSearchParams(params).toString();
-
-    async function getReport() {
-      const responseData = await fetch(url);
-      const responseJson = await responseData.json();
-
-      setRestaurantScore(responseJson.restaurantScore);
-      setCategories((categories) => [
-        ...categories,
-        ...responseJson.categories,
-      ]);
-    }
-    try {
-      getReport();
-    } catch (err) {
-      //TODO handle errors
-      console.log(err);
-    }
-  }, [userId]);
 
   const handleCopyClick = () => {
     var textArea = document.createElement('textarea');

@@ -37,7 +37,7 @@ const HomePage = () => {
       //TODO handle errors
       console.log(err);
     }
-  }, [restaurantList]);
+  }, []);
 
   const LoggedOutView = () => {
     return (
