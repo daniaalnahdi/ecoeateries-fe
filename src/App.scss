@@ -20,19 +20,16 @@
 }
 
 //Custom CSS
-//Nav
 nav a {
   font-size: 1.2rem !important;
   margin: 0.8rem 0;
 }
 
-//Logo
 .nav-logo,
 .logo-icon {
   color: $primary;
 }
 
-//Score Ring
 .score-ring-bg {
   fill: none;
   stroke: rgb(213, 213, 213);
@@ -59,7 +56,6 @@ nav a {
   text-anchor: middle;
 }
 
-// Edit Page
 .board-column {
   height: 40em;
   overflow: scroll;
@@ -70,12 +66,11 @@ nav a {
   cursor: pointer;
 }
 
-// Result Page
 .badge-preview {
   display: inline-block !important;
 }
 
-// View Result Page
+// For Embedded View in Result Page
 @media only screen and (max-width: 300px) {
   //Match iframe dimensions
   .hide-nav {
@@ -83,7 +78,6 @@ nav a {
   }
 }
 
-//Dashboard Cards
 .dashboard-card {
   height: 300px;
   transition: all 0.2s ease-in-out;
@@ -94,7 +88,31 @@ nav a {
   transform: scale(1.02);
 }
 
-//Search results
 .search-results {
   min-height: 40em;
+}
+
+.loading-spinner .button {
+  border: 0;
+  outline: none;
+}
+
+.loading-spinner {
+  margin: 10em 0;
+
+  .button.is-loading::after,
+  .loader,
+  .select.is-loading::after,
+  .control.is-loading::after {
+    height: 5em;
+    width: 5em;
+  }
+}
+
+.score-breakdown-card {
+  height: 20em;
+}
+
+.header {
+  height: 15em;
 }

@@ -1,19 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import HeaderPrimary from '../components/HeaderPrimary';
 import BoardColumn from '../components/BoardColumn';
 import BoardCard from '../components/BoardCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import useReportTimestamp from '../hooks/timestamp-hook';
 import AuthContext from '../auth/auth-context';
 
-const ReportEditPage = () => {
+const ReportEditPage = (props) => {
+  const history = useHistory();
   const auth = useContext(AuthContext);
-  const userId = auth.userId;
-  //add last updated timestamp
+  const { userId } = auth;
+  const {
+    getReportTimestamp,
+    updateReportTimestamp,
+    reportTimestamp,
+    isReportTimestampLoading,
+  } = useReportTimestamp();
 
   const [goalList, setGoalList] = useState([]);
 
   useEffect(() => {
+    //Get Goals
     const url = new URL('http://127.0.0.1:5000/user/goals');
     const params = { userId: userId };
 
@@ -33,6 +42,13 @@ const ReportEditPage = () => {
     }
   }, [userId]);
 
+  useEffect(() => {
+    //Get timestamp
+    if (userId) {
+      getReportTimestamp(userId);
+    }
+  }, [userId]);
+
   const renderGoalCard = (goal) => {
     const { goalId, goalName, goalCategory } = goal;
     return (
@@ -46,7 +62,9 @@ const ReportEditPage = () => {
   };
 
   const updateGoalStatus = async (goalId, colId) => {
-    const request = {
+    const parsedGoalId = parseInt(goalId);
+
+    const goalRequest = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -54,16 +72,13 @@ const ReportEditPage = () => {
       },
       body: JSON.stringify({
         userId: userId,
-        goalId: goalId,
+        goalId: parsedGoalId,
         newStatus: colId,
       }),
     };
 
     try {
-      const responseData = await fetch(
-        'http://127.0.0.1:5000/user/goals',
-        request
-      );
+      await fetch('http://127.0.0.1:5000/user/goals', goalRequest);
     } catch (err) {
       //TODO handle error
       console.log(err);
@@ -71,16 +86,43 @@ const ReportEditPage = () => {
     }
   };
 
+  const handleReportSubmit = async (e) => {
+    e.preventDefault();
+    updateReportTimestamp(userId);
+    history.push('/report/results');
+  };
+
+  if (isReportTimestampLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
-      <HeaderPrimary title='Submit Your Report' subtitle='Subtitle' />
+      <HeaderPrimary
+        title={
+          !!reportTimestamp ? 'Update Your Progress' : 'Start Your Progress'
+        }
+        subtitle={
+          !!reportTimestamp
+            ? `Last Updated: ${reportTimestamp}`
+            : 'Evaluate and see your current progress.'
+        }
+      />
       <div className='container'>
         <section className='section'>
-          <div className='has-text-right'>
-            <Link to='/report/results' className='button is-info is-large my-3'>
-              Generate New Report
-            </Link>
+          <div className='columns is-centered is-vcentered my-3'>
+            <div className='column is-half has-text-centered'>
+              <div className='subtitle is-3'>All done?</div>
+              <button
+                className='button has-text-weight-semibold is-primary is-large mt-1'
+                onClick={handleReportSubmit}
+              >
+                Generate New Report
+              </button>
+            </div>
           </div>
+        </section>
+        <section className='section pt-2'>
           <div className='columns'>
             <BoardColumn
               className='column'

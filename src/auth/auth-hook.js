@@ -55,7 +55,12 @@ const useAuth = () => {
     }
   }, [login]);
 
-  return { token, login, logout, userId };
+  return {
+    token,
+    login,
+    logout,
+    userId,
+  };
 };
 
 export default useAuth;

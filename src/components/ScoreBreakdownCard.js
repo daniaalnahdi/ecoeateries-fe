@@ -6,7 +6,7 @@ const ScoreBreakdownCard = ({ category }) => {
   const { categoryName, categoryScore, goals } = category;
 
   return (
-    <article className='message is-medium is-primary'>
+    <article className='score-breakdown-card message is-medium is-primary'>
       <div className='message-header'>
         <p>{categoryName}</p>
         <p>{categoryScore}% Completed</p>
@@ -16,10 +16,12 @@ const ScoreBreakdownCard = ({ category }) => {
           {goals.map(({ goalStatus, goalName }, i) => {
             return (
               <li key={i}>
-                <span className='mr-3'>
-                  <ProgressIcon goalStatus={goalStatus} />
-                </span>
-                {goalName}
+                <div className='columns'>
+                  <div className='column'>
+                    <ProgressIcon goalStatus={goalStatus} />
+                  </div>
+                  <div className='column is-11'>{goalName}</div>
+                </div>
               </li>
             );
           })}

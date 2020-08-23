@@ -51,7 +51,7 @@ const RegisterPage = () => {
     try {
       setIsLoading(true);
       const responseData = await fetch(
-        'http://127.0.0.1:5000/users/register',
+        'http://127.0.0.1:5000/register',
         request
       );
 
@@ -59,6 +59,7 @@ const RegisterPage = () => {
       setIsLoading(false);
 
       if (responseJson.error) {
+        setIsLoading(false)
         setErrorMsg(responseJson.error);
         return;
       }
@@ -66,7 +67,9 @@ const RegisterPage = () => {
       setErrorMsg('');
       setDisplaySuccess(true);
     } catch (err) {
+      //TODO handle errors
       console.log(err);
+      setIsLoading(false)
       setErrorMsg(
         'Oops, something went wrong! Make sure your information is valid.'
       );

@@ -18,7 +18,7 @@ const BoardCard = ({ goalName, goalCategory, goalId }) => {
       onDragOver={handleOnDragOver}
       draggable='true'
     >
-      <p className='tag is-primary is-medium is-light mb-1 '>{goalCategory}</p>
+      <p className='tag is-primary is-medium is-light mb-2 '>{goalCategory}</p>
       <div>
         <strong>{goalName}</strong>
       </div>

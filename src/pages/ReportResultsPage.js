@@ -6,51 +6,39 @@ import HeaderPrimary from '../components/HeaderPrimary';
 import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import BadgeCodeSnippet from '../components/BadgeCodeSnippet';
+import LargeNotice from '../components/LargeNotice';
 import BadgePreview from '../components/BadgePreview';
+import LoadingSpinner from '../components/LoadingSpinner';
 import useRestaurantInfo from '../hooks/restaurant-hook';
+import useReportInfo from '../hooks/report-hook';
 import AuthContext from '../auth/auth-context';
-
-//TO FETCH:
-//total score
-//categories with individual score and goals
+import useReportTimestamp from '../hooks/timestamp-hook';
 
 const ReportResultsPage = () => {
   const auth = useContext(AuthContext);
-  const userId = auth.userId;
+  const { userId } = auth;
+
+  const {
+    getReportTimestamp,
+    reportTimestamp,
+    isReportTimestampLoading,
+  } = useReportTimestamp();
 
   const defaultCopyButtonText = 'Copy Report Link';
   const [copyButtonText, setCopyButtonText] = useState(defaultCopyButtonText);
 
-  const { restaurantName } = useRestaurantInfo(userId);
-  const [restaurantScore, setRestaurantScore] = useState(0);
-  const [categories, setCategories] = useState([]);
+  const { restaurantName, isRestaurantLoading } = useRestaurantInfo(userId);
+  const { categories, restaurantScore, isReportLoading } = useReportInfo(
+    userId
+  );
 
   const reportViewUrl = `${window.location.protocol}//${window.location.host}/${userId}/report`;
   const codeSnippet = `<iframe src='${reportViewUrl}?view=embedded' height='335' width='300' title='EcoEateries ${restaurantName} Report'></iframe>`;
 
-  //if authUser, check if they submitted a report before
-
   useEffect(() => {
-    const url = new URL('http://127.0.0.1:5000/report');
-    const params = { userId: userId };
-
-    url.search = new URLSearchParams(params).toString();
-
-    async function getReport() {
-      const responseData = await fetch(url);
-      const responseJson = await responseData.json();
-
-      setRestaurantScore(responseJson.restaurantScore);
-      setCategories((categories) => [
-        ...categories,
-        ...responseJson.categories,
-      ]);
-    }
-    try {
-      getReport();
-    } catch (err) {
-      //TODO handle errors
-      console.log(err);
+    //Get timestamp
+    if (userId) {
+      getReportTimestamp(userId);
     }
   }, [userId]);
 
@@ -66,6 +54,29 @@ const ReportResultsPage = () => {
       setCopyButtonText(defaultCopyButtonText);
     }, 1500);
   };
+
+  if (isReportLoading || isRestaurantLoading || isReportTimestampLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!reportTimestamp) {
+    return (
+      <>
+        <HeaderPrimary
+          title='Your Results'
+          subtitle='View your most recent results and share them.'
+        />
+        <div className='container'>
+          <LargeNotice
+            title={`No report found (yet)!`}
+            subtitle='Start your report to track your progress and share your results.'
+            buttonTitle='New Report'
+            buttonSrc='/report/edit'
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
