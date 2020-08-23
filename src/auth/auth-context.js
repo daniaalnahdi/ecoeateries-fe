@@ -3,8 +3,7 @@ import { createContext } from 'react';
 const AuthContext = createContext({
   isLoggedIn: false,
   userId: null,
-  restaurantName: '',
-  restaurantLocation: '',
+  token: null,
   login: () => {},
   logout: () => {},
 });

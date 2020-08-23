@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AuthContext from '../auth/AuthContext';
+import AuthContext from '../auth/auth-context';
 
 const LoginPage = () => {
   const auth = useContext(AuthContext);
@@ -9,7 +9,8 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
-  const [displayError, setDisplayError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -19,17 +20,50 @@ const LoginPage = () => {
     }));
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    //validate here
-    if (credentials.email && credentials.password) {
-      //pass in user id
-      auth.login(1);
-      //update usercontext
-    } else {
-      setDisplayError(true);
+
+    //TODO: Validate
+    if (!credentials.email || !credentials.password) {
+      setErrorMsg('Email and password are required.');
+      return;
+    }
+
+    const request = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    };
+
+    try {
+      setIsLoading(true);
+      const responseData = await fetch(
+        'http://127.0.0.1:5000/users/login',
+        request
+      );
+      const responseJson = await responseData.json();
+      setIsLoading(false);
+
+      if (responseJson.error) {
+        setErrorMsg(responseJson.error);
+        return;
+      }
+
+      auth.login(responseJson.user_id, responseJson.access_token);
+    } catch (err) {
+      setErrorMsg(
+        'Oops, something went wrong! Make sure you enter a valid email and password.'
+      );
+      return;
     }
   };
+
   return (
     <div className='container'>
       <div className='my-6 mx-6 columns is-centered'>
@@ -39,11 +73,9 @@ const LoginPage = () => {
             Don't have an account? {''}
             <Link to='/register'>Register here.</Link>
           </p>
-          {displayError && (
+          {!!errorMsg && (
             <article className='message is-danger'>
-              <div className='message-body'>
-                Please enter a valid email and password.
-              </div>
+              <div className='message-body'>{errorMsg}</div>
             </article>
           )}
           <form onSubmit={handleLoginSubmit}>
@@ -73,7 +105,12 @@ const LoginPage = () => {
                 />
               </div>
             </div>
-            <button className='button is-info is-medium mt-2' type='submit'>
+            <button
+              className={`button is-info is-medium mt-2 ${
+                isLoading ? 'is-loading' : ''
+              }`}
+              type='submit'
+            >
               Login
             </button>
           </form>

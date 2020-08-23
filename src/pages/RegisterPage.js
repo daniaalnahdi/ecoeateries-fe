@@ -8,8 +8,9 @@ const RegisterPage = () => {
     restaurantName: '',
     restaurantLocation: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [displaySuccess, setDisplaySuccess] = useState(false);
-  const [displayError, setDisplayError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -19,22 +20,60 @@ const RegisterPage = () => {
     }));
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    //validate here
+
+    //TODO: Validate
     if (
-      credentials.email &&
-      credentials.password &&
-      credentials.restaurantName &&
-      credentials.restaurantLocation
+      !credentials.email ||
+      !credentials.password ||
+      !credentials.restaurantName ||
+      !credentials.restaurantLocation
     ) {
-      //register user
-      setDisplayError(false);
+      setErrorMsg('Email and password are required.');
+      return;
+    }
+
+    const request = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+        restaurantName: credentials.restaurantName,
+        restaurantLocation: credentials.restaurantLocation,
+      }),
+    };
+
+    try {
+      setIsLoading(true);
+      const responseData = await fetch(
+        'http://127.0.0.1:5000/users/register',
+        request
+      );
+
+      const responseJson = await responseData.json();
+      setIsLoading(false);
+
+      if (responseJson.error) {
+        setErrorMsg(responseJson.error);
+        return;
+      }
+
+      setErrorMsg('');
       setDisplaySuccess(true);
-    } else {
-      setDisplayError(true);
+    } catch (err) {
+      console.log(err);
+      setErrorMsg(
+        'Oops, something went wrong! Make sure your information is valid.'
+      );
+      return;
     }
   };
+
   return (
     <div className='container'>
       <div className='my-6 mx-6 columns is-centered'>
@@ -47,15 +86,14 @@ const RegisterPage = () => {
           {displaySuccess && (
             <article className='message is-success'>
               <div className='message-body'>
-                Register success! <Link to='/login'>Login</Link> to start your report.
+                Register success! <Link to='/login'>Login</Link> to start your
+                report.
               </div>
             </article>
           )}
-          {displayError && (
+          {errorMsg && (
             <article className='message is-danger'>
-              <div className='message-body'>
-                Please enter a valid email and password.
-              </div>
+              <div className='message-body'>{errorMsg}</div>
             </article>
           )}
           <form onSubmit={handleLoginSubmit}>
@@ -109,7 +147,12 @@ const RegisterPage = () => {
                 />
               </div>
             </div>
-            <button className='button is-info is-medium mt-2' type='submit'>
+            <button
+              className={`button is-info is-medium mt-2 ${
+                isLoading ? 'is-loading' : ''
+              }`}
+              type='submit'
+            >
               Register
             </button>
           </form>

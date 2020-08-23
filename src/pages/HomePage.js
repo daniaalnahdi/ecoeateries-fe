@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,28 +10,34 @@ import {
 import HeaderPrimary from '../components/HeaderPrimary';
 import Logo from '../components/Logo';
 import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
-import ReportsSearch from '../components/ReportsSearch';
+import RestaurantSearch from '../components/RestaurantSearch';
 import DashboardCard from '../components/DashboardCard';
 import MainIllustration from '../assets/MainIllustration';
-import AuthContext from '../auth/AuthContext';
-
-const DUMMY_RESTAURANT = {
-  restaurantName: 'Res Name',
-  restaurantLocation: 'Res Loc',
-};
-
-const DUMMY_USERS = [
-  { userId: 1, restaurantName: 'Name 1', restaurantLocation: 'Location 1' },
-  { userId: 2, restaurantName: 'Name 2', restaurantLocation: 'Location 2' },
-  { userId: 3, restaurantName: 'Name 3', restaurantLocation: 'Location 3' },
-];
+import useRestaurantInfo from '../hooks/restaurant-hook';
+import AuthContext from '../auth/auth-context';
 
 const HomePage = () => {
   const auth = useContext(AuthContext);
   const userId = auth.userId;
 
-  const restaurantName = DUMMY_RESTAURANT.restaurantName;
-  const restaurantLocation = DUMMY_RESTAURANT.restaurantLocation;
+  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
+  const [restaurantList, setRestaurantList] = useState([]);
+
+  useEffect(() => {
+    async function getRestaurantList() {
+      const responseData = await fetch('http://127.0.0.1:5000/restaurants');
+      const responseJson = await responseData.json();
+
+      setRestaurantList(responseJson.restaurants);
+    }
+
+    try {
+      getRestaurantList();
+    } catch (err) {
+      //TODO handle errors
+      console.log(err);
+    }
+  }, [restaurantList]);
 
   const LoggedOutView = () => {
     return (
@@ -52,12 +58,12 @@ const HomePage = () => {
               </p>
             </div>
             <div className='column'>
-              <MainIllustration width='600' />
+              <MainIllustration width={600} />
             </div>
           </div>
         </section>
         <section className='section'>
-          <ReportsSearch reports={DUMMY_USERS} />
+          <RestaurantSearch restaurants={restaurantList} />
         </section>
       </>
     );

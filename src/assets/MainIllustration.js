@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MainIllustration = (width) => {
+const MainIllustration = ({ width }) => {
   return (
     <svg
       id='e76419e8-217f-4623-abeb-e9c3d79c6db7'
