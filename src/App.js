@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ReportEditPage from './pages/ReportEditPage';
@@ -29,6 +30,9 @@ const App = () => {
         <Route path='/' exact>
           <HomePage />
         </Route>
+        <Route path='/about' exact>
+          <AboutPage />
+        </Route>
         <Route path='/report/edit' exact>
           <ReportEditPage />
         </Route>
@@ -46,6 +50,9 @@ const App = () => {
       <Switch>
         <Route path='/' exact>
           <HomePage />
+        </Route>
+        <Route path='/about' exact>
+          <AboutPage />
         </Route>
         <Route path='/login' exact>
           <LoginPage />

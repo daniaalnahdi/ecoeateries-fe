@@ -1,26 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faShareSquare,
-  faEye,
-  faTasks,
-} from '@fortawesome/free-solid-svg-icons';
 
 import HeaderPrimary from '../components/HeaderPrimary';
 import Logo from '../components/Logo';
 import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
 import RestaurantSearch from '../components/RestaurantSearch';
-import DashboardCard from '../components/DashboardCard';
+import Dashboard from '../components/Dashboard';
+import LargeNotice from '../components/LargeNotice';
+import LoadingSpinner from '../components/LoadingSpinner';
 import MainIllustration from '../assets/MainIllustration';
 import useRestaurantInfo from '../hooks/restaurant-hook';
+import useReportTimestamp from '../hooks/timestamp-hook';
 import AuthContext from '../auth/auth-context';
 
 const HomePage = () => {
   const auth = useContext(AuthContext);
-  const userId = auth.userId;
+  const { userId } = auth;
+  const {
+    getReportTimestamp,
+    reportTimestamp,
+    isReportTimestampLoading,
+  } = useReportTimestamp();
 
-  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
+  const {
+    restaurantName,
+    restaurantLocation,
+    isRestaurantLoading,
+  } = useRestaurantInfo(userId);
   const [restaurantList, setRestaurantList] = useState([]);
 
   useEffect(() => {
@@ -39,9 +45,16 @@ const HomePage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    //Get timestamp
+    if (userId) {
+      getReportTimestamp(userId);
+    }
+  }, [userId]);
+
   const LoggedOutView = () => {
     return (
-      <>
+      <div className='container'>
         <section className='section'>
           <div className='columns is-vcentered'>
             <div className='column'>
@@ -51,10 +64,16 @@ const HomePage = () => {
                 sustainable and goal-setting etc.
               </p>
               <Link className='button is-primary is-large mt-3' to='/login'>
-                Get Your Report Now
+                Get Your Report
+              </Link>
+              <Link
+                className='button is-primary is-light is-large mt-3 ml-3'
+                to='/about'
+              >
+                Learn More
               </Link>
               <p className='subtitle is-6 mt-4'>
-                Based on blah system, link it here
+                Adapted on blah system, link it here
               </p>
             </div>
             <div className='column'>
@@ -65,65 +84,55 @@ const HomePage = () => {
         <section className='section'>
           <RestaurantSearch restaurants={restaurantList} />
         </section>
-      </>
+      </div>
     );
   };
 
   const LoggedInView = () => {
     return (
-      <section className='section'>
-        <div className='columns is-vcentered'>
-          <DashboardCard
-            title='Get New Report'
-            subtitle='Update your progress and generate a new report.'
-            src='/report/edit'
-          >
-            <FontAwesomeIcon icon={faTasks} />
-          </DashboardCard>
-          <DashboardCard
-            title='Review and Share'
-            subtitle='Review your last saved report and learn how to share it.'
-            src='/report/results'
-          >
-            <FontAwesomeIcon icon={faShareSquare} />
-          </DashboardCard>
-          <DashboardCard
-            title='View Official Report'
-            subtitle='View the official report that is public for viewing.'
-            src={`/${userId}/report`}
-          >
-            <FontAwesomeIcon icon={faEye} />
-          </DashboardCard>
-        </div>
-      </section>
+      <>
+        {isReportTimestampLoading || isRestaurantLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <HeaderPrimary
+              title='Dashboard'
+              subtitle={
+                <>
+                  <RestaurantInfoLabel
+                    title={restaurantName}
+                    type='name'
+                    className=' is-size-4 mb-2'
+                  />
+                  <RestaurantInfoLabel
+                    title={restaurantLocation}
+                    type='location'
+                    className=' is-size-4'
+                  />
+                </>
+              }
+            />
+            <div className='container'>
+              <section className='section'>
+                {!reportTimestamp ? (
+                  <LargeNotice
+                    title='Welcome to EcoEateries!'
+                    subtitle='Start your report now.'
+                    buttonTitle='New Report'
+                    buttonSrc='/report/edit'
+                  />
+                ) : (
+                  <Dashboard userId={userId} />
+                )}
+              </section>
+            </div>
+          </>
+        )}
+      </>
     );
   };
-  return (
-    <>
-      {auth.isLoggedIn ? (
-        <HeaderPrimary
-          title='Dashboard'
-          subtitle={
-            <>
-              <RestaurantInfoLabel
-                title={restaurantName}
-                type='name'
-                className=' is-size-4 mb-2'
-              />
-              <RestaurantInfoLabel
-                title={restaurantLocation}
-                type='location'
-                className=' is-size-4'
-              />
-            </>
-          }
-        />
-      ) : null}
-      <div className='container'>
-        {auth.isLoggedIn ? <LoggedInView /> : <LoggedOutView />}
-      </div>
-    </>
-  );
+
+  return auth.isLoggedIn ? <LoggedInView /> : <LoggedOutView />;
 };
 
 export default HomePage;

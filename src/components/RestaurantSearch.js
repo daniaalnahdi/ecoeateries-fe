@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 import RestaurantInfoLabel from './RestaurantInfoLabel';
@@ -14,7 +16,7 @@ const RestaurantSearch = ({ restaurants }) => {
 
     setSearchResults(results);
   }, [restaurants, searchTerm]);
-  
+
   useEffect(() => {
     const results = restaurants.filter(({ restaurantName }) =>
       restaurantName.toLowerCase().includes(searchTerm)
@@ -33,13 +35,18 @@ const RestaurantSearch = ({ restaurants }) => {
       <div className='column is-half'>
         <h2 className='title is-3'>See how others scored</h2>
         <div className='field'>
-          <input
-            className='input is-medium'
-            type='text'
-            placeholder='Search a restaurant...'
-            value={searchTerm}
-            onChange={handleInputChange}
-          />
+          <p className='control has-icons-left has-icons-right'>
+            <input
+              className='input is-medium'
+              type='text'
+              placeholder='Search a restaurant...'
+              value={searchTerm}
+              onChange={handleInputChange}
+            />
+            <span className='icon is-small is-left'>
+              <FontAwesomeIcon icon={faSearch} />
+            </span>
+          </p>
         </div>
       </div>
       <div className='search-results'>
@@ -62,8 +69,12 @@ const RestaurantSearch = ({ restaurants }) => {
                     <Link
                       to={`/${userId}/report`}
                       target='_blank'
-                      className='button is-info is-light is-medium'
+                      className='button is-primary is-light is-medium'
                     >
+                      <FontAwesomeIcon
+                        icon={faExternalLinkAlt}
+                        className='mr-2'
+                      />
                       View Report
                     </Link>
                   </div>

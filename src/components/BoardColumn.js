@@ -10,7 +10,7 @@ const BoardColumn = ({ title, children, updateGoalStatus, id }) => {
     card.style.display = 'block';
 
     e.target.appendChild(card);
-    updateGoalStatus(parseInt(cardId), id);
+    updateGoalStatus(cardId, id);
   };
 
   const handleOnDragOver = (e) => {

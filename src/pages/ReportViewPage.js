@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,22 +8,35 @@ import RestaurantInfoLabel from '../components/RestaurantInfoLabel';
 import ScoreTotalSection from '../components/ScoreTotalBanner';
 import ScoreBreakdownGrid from '../components/ScoreBreakownGrid';
 import PageNotFound from '../components/PageNotFound';
+import LoadingSpinner from '../components/LoadingSpinner';
 import useRestaurantInfo from '../hooks/restaurant-hook';
+import useReportTimestamp from '../hooks/timestamp-hook';
 import useReportInfo from '../hooks/report-hook';
-
+import AuthContext from '../auth/auth-context';
+import LargeNotice from '../components/LargeNotice';
 
 //TO FETCH:
 //total score
 //categories with individual score and goals
 
 const ReportViewPage = () => {
+  const auth = useContext(AuthContext);
   const [userId, setUserId] = useState(useParams().userId);
 
   const queryParams = useLocation().search;
   const isEmbedded = queryParams.includes('view=embedded');
   const urlNoParams = window.location.href.split('?')[0];
 
-  const {categories, restaurantScore} = useReportInfo(userId)
+  const {
+    getReportTimestamp,
+    reportTimestamp,
+    isReportTimestampLoading,
+  } = useReportTimestamp();
+
+  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
+  const { categories, restaurantScore, isReportLoading } = useReportInfo(
+    userId
+  );
 
   useEffect(() => {
     const url = new URL('http://127.0.0.1:5000/user/exists');
@@ -35,7 +48,12 @@ const ReportViewPage = () => {
       const responseData = await fetch(url);
       const responseJson = await responseData.json();
 
-      setUserId(responseJson.exists === 'true' ? userId : null);
+      if (responseJson.exists === 'true') {
+        setUserId(userId);
+        getReportTimestamp(userId);
+      } else {
+        setUserId(null);
+      }
     }
 
     try {
@@ -44,11 +62,7 @@ const ReportViewPage = () => {
       //TODO handle errors
       console.log(err);
     }
-
   }, [userId]);
-
-  //if authUser, check if they submitted a report before
-  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
 
   if (!userId) {
     return <PageNotFound />;
@@ -65,11 +79,55 @@ const ReportViewPage = () => {
           className='button is-primary'
         >
           <FontAwesomeIcon icon={faExternalLinkAlt} className='mr-2' />
-          See Full Report
+          View Full Report
         </a>
       </div>
     );
   }
+
+  const FullReportView = () => {
+    if (!reportTimestamp) {
+      const sameUser = auth.userId == userId;
+      return (
+        <>
+          {sameUser ? (
+            <LargeNotice
+              title='No report found (yet)!'
+              subtitle={
+                sameUser
+                  ? 'Start your report to track your progress and share your results.'
+                  : `Are you ${restaurantName}? Login to get and share your report.`
+              }
+              buttonTitle='New Report'
+              buttonSrc='/report/edit'
+            />
+          ) : (
+            <LargeNotice
+              title='No report found (yet)!'
+              subtitle={`Are you ${restaurantName}? Login to share your results.`}
+              buttonTitle='Login'
+              buttonSrc='/login'
+            />
+          )}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <section className='section'>
+          <ScoreTotalSection
+            score={restaurantScore}
+            restaurantName={restaurantName}
+          />
+        </section>
+        <hr />
+        <section className='section'>
+          <ScoreBreakdownGrid categories={categories} />
+        </section>
+      </>
+    );
+  };
 
   return (
     <>
@@ -91,16 +149,11 @@ const ReportViewPage = () => {
         }
       />
       <div className='container'>
-        <section className='section'>
-          <ScoreTotalSection
-            score={restaurantScore}
-            restaurantName={restaurantName}
-          />
-        </section>
-        <hr />
-        <section className='section'>
-          <ScoreBreakdownGrid categories={categories} />
-        </section>
+        {isReportLoading || isReportTimestampLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <FullReportView />
+        )}
       </div>
     </>
   );

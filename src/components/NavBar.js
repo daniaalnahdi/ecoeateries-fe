@@ -34,7 +34,7 @@ const NavBar = () => {
           </Link>
         </div>
         <div className='navbar-item '>
-          <Link to={`/report/results`} className='button is-info is-light'>
+          <Link to='/report/results' className='button is-info is-light'>
             Share Report
           </Link>
         </div>
@@ -56,6 +56,18 @@ const NavBar = () => {
               <Logo className='nav-logo title is-3' />
             </Link>
           </div>
+        </div>
+        <div className='navbar-start'>
+        <div className='navbar-item'>
+          <Link to='/' >
+            Home
+          </Link>
+        </div>
+        <div className='navbar-item'>
+          <Link to='/about'>
+            About
+          </Link>
+        </div>
         </div>
         <div className='navbar-end'>
           {auth.isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}

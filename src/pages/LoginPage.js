@@ -43,24 +43,24 @@ const LoginPage = () => {
 
     try {
       setIsLoading(true);
-      const responseData = await fetch(
+
+      const authResponseData = await fetch(
         'http://127.0.0.1:5000/login',
         request
       );
-      const responseJson = await responseData.json();
+      const authResponseJson = await authResponseData.json();
       setIsLoading(false);
 
-      if (responseJson.error) {
-        setErrorMsg(responseJson.error);
+      if (authResponseJson.error) {
+        setErrorMsg(authResponseJson.error);
         return;
       }
-
-      auth.login(responseJson.user_id, responseJson.access_token);
+    
+      auth.login(authResponseJson.user_id, authResponseJson.access_token);
     } catch (err) {
       setErrorMsg(
         'Oops, something went wrong! Make sure you enter a valid email and password.'
       );
-      return;
     }
   };
 

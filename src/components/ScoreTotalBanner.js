@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Logo from '../components/Logo';
 import ScoreRing from '../assets/ScoreRing';
 
 const ScoreTotalSection = ({ restaurantName, score, small }) => {
@@ -8,7 +9,11 @@ const ScoreTotalSection = ({ restaurantName, score, small }) => {
       <div className='columns is-vcentered'>
         <div className='column is-half has-text-centered'>
           <h2 className='title is-3'>{restaurantName}</h2>
-          <h3 className='title is-4'>EcoEateries Score</h3>
+          <h3 className='title is-4'>
+            <Logo>
+              <span>Score</span>
+            </Logo>
+          </h3>
         </div>
         <div className='column is-half has-text-centered my-2'>
           <ScoreRing score={score} dimensions={small ? 150 : 200} />

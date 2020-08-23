@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeaderPrimary = ({ title, subtitle }) => {
   return (
-    <section className='hero is-primary is-bold'>
+    <section className='header hero is-primary is-bold'>
       <div className='hero-body'>
         <div className='container'>
           <h1 className='title is-1'>{title}</h1>
