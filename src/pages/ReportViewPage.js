@@ -15,10 +15,6 @@ import useReportInfo from '../hooks/report-hook';
 import AuthContext from '../auth/auth-context';
 import LargeNotice from '../components/LargeNotice';
 
-//TO FETCH:
-//total score
-//categories with individual score and goals
-
 const ReportViewPage = () => {
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState(useParams().userId);
@@ -33,7 +29,11 @@ const ReportViewPage = () => {
     isReportTimestampLoading,
   } = useReportTimestamp();
 
-  const { restaurantName, restaurantLocation } = useRestaurantInfo(userId);
+  const {
+    restaurantName,
+    restaurantLocation,
+    isRestaurantLoading,
+  } = useRestaurantInfo(userId);
   const { categories, restaurantScore, isReportLoading } = useReportInfo(
     userId
   );
@@ -83,6 +83,10 @@ const ReportViewPage = () => {
         </a>
       </div>
     );
+  }
+
+  if (isReportLoading || isReportTimestampLoading || isRestaurantLoading) {
+    return <LoadingSpinner />;
   }
 
   const FullReportView = () => {
@@ -149,11 +153,7 @@ const ReportViewPage = () => {
         }
       />
       <div className='container'>
-        {isReportLoading || isReportTimestampLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <FullReportView />
-        )}
+        <FullReportView />
       </div>
     </>
   );
