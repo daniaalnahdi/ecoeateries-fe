@@ -1,4 +1,4 @@
-# EcoEateries 
+# EcoEateries (Front-End) 
 
 Backend Repo: https://github.com/snehaskr19/ecoeateries-be
 
